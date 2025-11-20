@@ -184,11 +184,11 @@ class FilmRepositoryTest {
         // The actual persistence is tested via the REST endpoint tests.
 
         // Verify we can still query films (ensures no exception was thrown)
-        long countAfter = filmRepository.findByMinimumLength(minLength)
+        List<Film> filmsAfter = filmRepository.findByMinimumLength(minLength)
                 .limit(5)
-                .count();
+                .toList();
 
-        assertTrue(countAfter > 0, "Should still be able to query films after update");
+        assertFalse(filmsAfter.isEmpty(), "Should still be able to query films after update");
     }
 
     @Test

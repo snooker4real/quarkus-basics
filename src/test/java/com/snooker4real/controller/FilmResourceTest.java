@@ -86,6 +86,7 @@ class FilmResourceTest {
                 .get(BASE_PATH + "/paged")
                 .then()
                 .statusCode(200)
+                .contentType(ContentType.TEXT)
                 .extract()
                 .asString();
 
@@ -97,6 +98,7 @@ class FilmResourceTest {
                 .get(BASE_PATH + "/paged")
                 .then()
                 .statusCode(200)
+                .contentType(ContentType.TEXT)
                 .extract()
                 .asString();
 
@@ -280,6 +282,7 @@ class FilmResourceTest {
                 .get(BASE_PATH + "/paged")
                 .then()
                 .statusCode(400)
+                .contentType(ContentType.TEXT)
                 .body(containsString("non-negative"));
     }
 
