@@ -64,13 +64,22 @@ public class Film {
     @Column(name = "last_update")
     private LocalDateTime lastUpdate;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "film_actor",
-            joinColumns = { @JoinColumn(name = "film_id") },
-            inverseJoinColumns = { @JoinColumn(name = "actor_id") }
+            joinColumns = {@JoinColumn(name = "film_id")},
+            inverseJoinColumns = {@JoinColumn(name = "actor_id")}
     )
     private List<Actor> actors = new ArrayList<>();
+
+    public Film() {
+    }
+
+    public Film(Integer filmId, String title, Integer length) {
+        this.filmId = filmId;
+        this.title = title;
+        this.length = length;
+    }
 
     public Integer getFilmId() {
         return this.filmId;
@@ -174,6 +183,10 @@ public class Film {
 
     public void setRating(Object rating) {
         this.rating = rating;
+    }
+
+    public List<Actor> getActors() {
+        return this.actors;
     }
 
     public void setActors(List<Actor> actors) {
