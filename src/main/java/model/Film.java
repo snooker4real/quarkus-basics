@@ -156,10 +156,6 @@ public class Film {
         return this.rating;
     }
 
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
     public Object getSpecialFeatures() {
         return this.specialFeatures;
     }
