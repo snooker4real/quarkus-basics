@@ -5,6 +5,7 @@ import com.snooker4real.model.Film;
 import com.snooker4real.repository.FilmRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,9 +29,14 @@ public class FilmService {
      * Find a film by ID and return as DTO.
      * Uses pattern matching and Optional enhancements.
      */
+    @Transactional
     public Optional<FilmDTO> findFilmById(Integer filmId) {
         return filmRepository.findById(filmId)
-                .map(FilmDTO::fromEntity);
+                .map(film -> {
+                    // Initialize lazy collections within transaction
+                    film.getActors().size(); // Force initialization
+                    return FilmDTO.fromEntity(film);
+                });
     }
 
     /**
