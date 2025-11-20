@@ -47,13 +47,21 @@ public class FilmResource {
      */
     @GET
     @Path("/paged")
-    public String getFilmsPaged(
+    public Response getFilmsPaged(
             @QueryParam("page") @DefaultValue("0") long page,
             @QueryParam("minLength") @DefaultValue("0") int minLength) {
 
-        return filmRepository.findByMinimumLengthPaged(page, minLength)
+        if (page < 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Page number must be non-negative")
+                    .build();
+        }
+
+        String result = filmRepository.findByMinimumLengthPaged(page, minLength)
                 .map(this::formatFilmWithLength)
                 .collect(Collectors.joining("\n"));
+
+        return Response.ok(result).build();
     }
 
     /**
@@ -83,19 +91,29 @@ public class FilmResource {
      */
     @PUT
     @Path("/rental-rate")
-    public String updateRentalRate(
+    public Response updateRentalRate(
             @QueryParam("minLength") @DefaultValue("0") int minLength,
             @QueryParam("rate") BigDecimal rentalRate) {
 
-        if (rentalRate == null || rentalRate.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new BadRequestException("Rental rate must be a positive value");
+        if (rentalRate == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Rental rate is required")
+                    .build();
+        }
+
+        if (rentalRate.compareTo(BigDecimal.ZERO) <= 0) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("Rental rate must be a positive value")
+                    .build();
         }
 
         filmRepository.updateRentalRate(minLength, rentalRate);
 
-        return filmRepository.findByMinimumLength(minLength)
+        String result = filmRepository.findByMinimumLength(minLength)
                 .map(this::formatFilmWithRentalRate)
                 .collect(Collectors.joining("\n"));
+
+        return Response.ok(result).build();
     }
 
     // Private formatting methods
