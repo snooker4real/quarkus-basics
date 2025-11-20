@@ -1,4 +1,4 @@
-package model;
+package com.snooker4real.model;
 
 
 import jakarta.persistence.Basic;
@@ -20,7 +20,7 @@ public class Actor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "actor_id")
-    private Integer actorId;
+    private Short actorId;
 
     @Basic
     @Column(name = "first_name")
@@ -37,11 +37,11 @@ public class Actor {
     @ManyToMany(mappedBy = "actors")
     private Set<Film> films = new HashSet<>();
 
-    public Integer getActorId() {
+    public Short getActorId() {
         return this.actorId;
     }
 
-    public void setActorId(Integer actorId) {
+    public void setActorId(Short actorId) {
         this.actorId = actorId;
     }
 

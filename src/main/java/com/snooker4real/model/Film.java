@@ -1,4 +1,4 @@
-package model;
+package com.snooker4real.model;
 
 import jakarta.persistence.*;
 
@@ -26,7 +26,7 @@ public class Film {
 
     @Basic
     @Column(name = "release_year")
-    private Object releaseYear;
+    private Short releaseYear;
 
     @Basic
     @Column(name = "language_id")
@@ -57,7 +57,7 @@ public class Film {
     private Object rating;
 
     @Basic
-    @Column(name = "special_features", columnDefinition = "enum('Trailers', 'Deleted Scenes', 'Commentaries', 'Behind the Scenes')")
+    @Column(name = "special_features", columnDefinition = "set('Trailers', 'Deleted Scenes', 'Commentaries', 'Behind the Scenes')")
     private Object specialFeatures;
 
     @Basic
@@ -96,11 +96,11 @@ public class Film {
         this.description = description;
     }
 
-    public Object getReleaseYear() {
+    public Short getReleaseYear() {
         return this.releaseYear;
     }
 
-    public void setReleaseYear(Object releaseYear) {
+    public void setReleaseYear(Short releaseYear) {
         this.releaseYear = releaseYear;
     }
 
