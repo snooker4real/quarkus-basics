@@ -1,11 +1,17 @@
 ####
 # This Dockerfile is used to build a Quarkus application for production deployment on Dokploy
+# Requires Java 25 for modern Java features
 ####
 
 ## Stage 1: Build the application
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+FROM eclipse-temurin:25-jdk AS build
 
 WORKDIR /app
+
+# Install Maven
+RUN apt-get update && \
+    apt-get install -y maven && \
+    rm -rf /var/lib/apt/lists/*
 
 # Copy pom.xml first for better layer caching
 COPY pom.xml .
@@ -20,7 +26,7 @@ COPY src ./src
 RUN mvn package -DskipTests -B
 
 ## Stage 2: Create the runtime image
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25-jre
 
 WORKDIR /deployments
 
