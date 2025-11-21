@@ -22,7 +22,10 @@ RUN mvn dependency:go-offline -B
 # Copy source code
 COPY src ./src
 
-# Build the application
+# First, compile to generate JPAStreamer metamodel classes (Film$, Actor$, etc.)
+RUN mvn compile -B
+
+# Then package the application
 RUN mvn package -DskipTests -B
 
 ## Stage 2: Create the runtime image
