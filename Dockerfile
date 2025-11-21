@@ -7,19 +7,17 @@ FROM maven:3.9.9-eclipse-temurin-21 AS build
 
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml first for better layer caching
-COPY mvnw .
-COPY .mvn .mvn
+# Copy pom.xml first for better layer caching
 COPY pom.xml .
 
 # Download dependencies (this layer will be cached unless pom.xml changes)
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src ./src
 
 # Build the application
-RUN ./mvnw package -DskipTests
+RUN mvn package -DskipTests -B
 
 ## Stage 2: Create the runtime image
 FROM eclipse-temurin:21-jre
