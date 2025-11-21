@@ -106,7 +106,15 @@
                     <release>25</release>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
+                        <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
                     </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.speedment.jpastreamer</groupId>
+                            <artifactId>fieldgenerator-standard</artifactId>
+                            <version>3.0.3</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
