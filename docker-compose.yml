@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: restsql/mysql-sakila
+    container_name: sakila-db
+    ports:
+      - "3306:3306"
+    networks:
+      - quarkus-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psakila"]
+      timeout: 20s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: quarkus-app
+    env_file:
+      - .env
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/sakila
+    ports:
+      - "${PORT:-2020}:${PORT:-2020}"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - quarkus-network
+
+volumes:
+  mysql_data:
+
+networks:
+  quarkus-network:
+    driver: bridge
