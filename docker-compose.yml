@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   mysql:
     image: restsql/mysql-sakila
     container_name: sakila-db
     ports:
-      - "3306:3306"
+      - "3309:3306"
     networks:
       - quarkus-network
     healthcheck:
