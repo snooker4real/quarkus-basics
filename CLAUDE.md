@@ -103,7 +103,7 @@ docker run -i --rm -p 8080:8080 quarkus/quarkus-basics-jvm
 - Optional HTTP to HTTPS redirect (disabled by default)
 
 **CORS Configuration:**
-- Enabled for `https://newscaper.catchee.xyz`
+- Enabled for `https://film.catchee.xyz`
 - Allowed methods: GET, POST, PUT, DELETE, OPTIONS
 - Credentials support: Enabled
 - Configured headers and max-age for preflight caching

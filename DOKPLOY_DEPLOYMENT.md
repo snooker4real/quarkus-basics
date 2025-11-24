@@ -7,7 +7,7 @@ Ce guide explique comment déployer l'application Quarkus sur Dokploy via catche
 - Accès à votre instance Dokploy sur catchee.xyz
 - Dépôt Git accessible par Dokploy (GitHub, GitLab, etc.)
 - Base de données MySQL accessible depuis Dokploy
-- Certificat SSL pour newscaper.catchee.xyz (Dokploy peut gérer cela avec Traefik/Let's Encrypt)
+- Certificat SSL pour film.catchee.xyz (Dokploy peut gérer cela avec Traefik/Let's Encrypt)
 
 ## Étape 1 : Préparer votre dépôt Git
 
@@ -101,7 +101,7 @@ Dokploy utilise généralement Traefik comme reverse proxy avec gestion automati
 **Configuration dans Dokploy :**
 
 1. Dans les paramètres de l'application, activez **"Enable HTTPS"**
-2. Configurez le domaine : `newscaper.catchee.xyz`
+2. Configurez le domaine : `film.catchee.xyz`
 3. Traefik générera automatiquement un certificat Let's Encrypt
 4. L'application reçoit uniquement du trafic HTTP sur le port 2020
 5. Traefik gère la terminaison SSL en amont
@@ -136,7 +136,7 @@ KEYSTORE_PASSWORD=votre_mot_de_passe
 
 1. Allez dans les paramètres de l'application
 2. Section **"Domains"** ou **"Domaines"**
-3. Ajoutez : `newscaper.catchee.xyz`
+3. Ajoutez : `film.catchee.xyz`
 4. Activez **"Auto HTTPS"** si disponible
 
 ### DNS
@@ -145,7 +145,7 @@ Configurez votre DNS pour pointer vers Dokploy :
 
 ```
 Type: A
-Nom: newscaper.catchee.xyz
+Nom: film.catchee.xyz
 Valeur: [IP de votre serveur Dokploy]
 TTL: 300
 ```
@@ -154,7 +154,7 @@ Ou si vous utilisez un sous-domaine de catchee.xyz :
 
 ```
 Type: CNAME
-Nom: newscaper
+Nom: film
 Valeur: catchee.xyz
 TTL: 300
 ```
@@ -201,27 +201,27 @@ Listening on: http://0.0.0.0:2020
 
 ```bash
 # Test HTTP (si pas de redirection)
-curl http://newscaper.catchee.xyz/q/health
+curl http://film.catchee.xyz/q/health
 
 # Test HTTPS
-curl https://newscaper.catchee.xyz/q/health
+curl https://film.catchee.xyz/q/health
 
 # Test de l'API
-curl https://newscaper.catchee.xyz/q/swagger-ui
+curl https://film.catchee.xyz/q/swagger-ui
 ```
 
 ### Vérifier CORS
 
 ```bash
-curl -H "Origin: https://newscaper.catchee.xyz" \
+curl -H "Origin: https://film.catchee.xyz" \
      -H "Access-Control-Request-Method: GET" \
      -X OPTIONS \
-     https://newscaper.catchee.xyz/q/health -v
+     https://film.catchee.xyz/q/health -v
 ```
 
 Vous devriez voir les headers CORS dans la réponse :
 ```
-Access-Control-Allow-Origin: https://newscaper.catchee.xyz
+Access-Control-Allow-Origin: https://film.catchee.xyz
 Access-Control-Allow-Credentials: true
 ```
 
@@ -231,11 +231,11 @@ Access-Control-Allow-Credentials: true
 
 Pour avoir des environnements staging/production :
 
-1. **Staging** : `staging.newscaper.catchee.xyz`
+1. **Staging** : `staging.film.catchee.xyz`
    - Branch : `develop`
    - Variables d'environnement de staging
 
-2. **Production** : `newscaper.catchee.xyz`
+2. **Production** : `film.catchee.xyz`
    - Branch : `main`
    - Variables d'environnement de production
 
@@ -370,7 +370,7 @@ docker exec -it [container-id] sh
 - [ ] Application créée dans Dokploy
 - [ ] Variables d'environnement configurées
 - [ ] Base de données créée et accessible
-- [ ] DNS configuré pour newscaper.catchee.xyz
+- [ ] DNS configuré pour film.catchee.xyz
 - [ ] Domaine ajouté dans Dokploy
 - [ ] SSL/HTTPS activé (via Traefik ou interne)
 - [ ] Health checks configurés

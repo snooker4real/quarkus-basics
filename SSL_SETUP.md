@@ -1,8 +1,8 @@
-# Configuration SSL/HTTPS pour newscaper.catchee.xyz
+# Configuration SSL/HTTPS pour film.catchee.xyz
 
 ## Vue d'ensemble
 
-Ce document explique comment configurer SSL/HTTPS pour l'application Quarkus afin qu'elle soit accessible via https://newscaper.catchee.xyz/.
+Ce document explique comment configurer SSL/HTTPS pour l'application Quarkus afin qu'elle soit accessible via https://film.catchee.xyz/.
 
 ## Configuration effectuée
 
@@ -10,7 +10,7 @@ La configuration SSL/HTTPS a été ajoutée dans `src/main/resources/application
 
 - **Port HTTPS** : 8443 (par défaut, configurable via `SSL_PORT`)
 - **Type de keystore** : PKCS12
-- **CORS** : Configuré pour autoriser les requêtes depuis https://newscaper.catchee.xyz
+- **CORS** : Configuré pour autoriser les requêtes depuis https://film.catchee.xyz
 
 ## Étapes pour obtenir et configurer le certificat SSL
 
@@ -32,17 +32,17 @@ sudo yum install certbot
 #### 2. Obtenir le certificat
 
 ```bash
-sudo certbot certonly --standalone -d newscaper.catchee.xyz
+sudo certbot certonly --standalone -d film.catchee.xyz
 ```
 
-Les certificats seront générés dans `/etc/letsencrypt/live/newscaper.catchee.xyz/`
+Les certificats seront générés dans `/etc/letsencrypt/live/film.catchee.xyz/`
 
 #### 3. Convertir le certificat en format PKCS12
 
 ```bash
 sudo openssl pkcs12 -export \
-  -in /etc/letsencrypt/live/newscaper.catchee.xyz/fullchain.pem \
-  -inkey /etc/letsencrypt/live/newscaper.catchee.xyz/privkey.pem \
+  -in /etc/letsencrypt/live/film.catchee.xyz/fullchain.pem \
+  -inkey /etc/letsencrypt/live/film.catchee.xyz/privkey.pem \
   -out keystore.p12 \
   -name quarkus \
   -passout pass:VOTRE_MOT_DE_PASSE
@@ -67,7 +67,7 @@ keytool -genkeypair \
   -storepass changeit \
   -keyalg RSA \
   -keysize 2048 \
-  -dname "CN=newscaper.catchee.xyz" \
+  -dname "CN=film.catchee.xyz" \
   -alias quarkus \
   -storetype PKCS12 \
   -keystore src/main/resources/keystore.p12 \
@@ -118,7 +118,7 @@ Assurez-vous que votre DNS pointe vers le serveur hébergeant l'application :
 
 ```
 Type: A
-Nom: newscaper.catchee.xyz
+Nom: film.catchee.xyz
 Valeur: [Adresse IP de votre serveur]
 ```
 
@@ -131,16 +131,16 @@ Si vous utilisez Nginx ou Apache en reverse proxy :
 ```nginx
 server {
     listen 80;
-    server_name newscaper.catchee.xyz;
+    server_name film.catchee.xyz;
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name newscaper.catchee.xyz;
+    server_name film.catchee.xyz;
 
-    ssl_certificate /etc/letsencrypt/live/newscaper.catchee.xyz/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/newscaper.catchee.xyz/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/film.catchee.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/film.catchee.xyz/privkey.pem;
 
     location / {
         proxy_pass http://localhost:2020;
@@ -169,14 +169,14 @@ server {
 curl -k https://localhost:8443/q/health
 
 # Avec certificat valide
-curl https://newscaper.catchee.xyz/q/health
+curl https://film.catchee.xyz/q/health
 ```
 
 ### 3. Vérifier les endpoints
 
 - **HTTP** : http://localhost:2020/q/swagger-ui
 - **HTTPS** : https://localhost:8443/q/swagger-ui
-- **Production** : https://newscaper.catchee.xyz/q/swagger-ui
+- **Production** : https://film.catchee.xyz/q/swagger-ui
 
 ## Renouvellement du certificat Let's Encrypt
 
@@ -206,7 +206,7 @@ Après le renouvellement, recréez le fichier PKCS12 et redémarrez l'applicatio
 
 ## Configuration CORS
 
-La configuration CORS est déjà en place pour autoriser les requêtes depuis https://newscaper.catchee.xyz :
+La configuration CORS est déjà en place pour autoriser les requêtes depuis https://film.catchee.xyz :
 
 - Méthodes autorisées : GET, POST, PUT, DELETE, OPTIONS
 - Headers autorisés : accept, authorization, content-type, x-requested-with
@@ -230,7 +230,7 @@ Si le port 443 est déjà utilisé (par Nginx, Apache, etc.), utilisez un autre 
 
 ### CORS errors
 
-Vérifiez que l'origine dans `quarkus.http.cors.origins` correspond exactement à l'URL du frontend (https://newscaper.catchee.xyz).
+Vérifiez que l'origine dans `quarkus.http.cors.origins` correspond exactement à l'URL du frontend (https://film.catchee.xyz).
 
 ## Ressources
 
