@@ -41,8 +41,8 @@ COPY --from=build /app/target/quarkus-app/quarkus/ /deployments/quarkus/
 ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
 
-# Expose the application port
-EXPOSE 2020
+# Expose the application ports (HTTP and HTTPS)
+EXPOSE 2020 8443
 
 # Run the application
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar $JAVA_APP_JAR"]

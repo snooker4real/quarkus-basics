@@ -86,10 +86,29 @@ docker run -i --rm -p 8080:8080 quarkus/quarkus-basics-jvm
 **Connection details** in `src/main/resources/application.properties`:
 - Database: MySQL at `localhost:3309`
 - Schema: `sakila`
-- Username/password configured (currently hardcoded - should be externalized for production)
-- SQL logging enabled via `quarkus.hibernate-orm.log.sql=true`
+- Username/password configured via environment variables with defaults
+- SQL logging configurable via `LOG_SQL` environment variable (default: false)
 
-**Important:** There's a typo in the current configuration: `quarkus.datasource.jubc.url` should be `quarkus.datasource.jdbc.url`
+### HTTP/HTTPS Configuration
+
+**HTTP Configuration:**
+- HTTP host: `0.0.0.0` (all interfaces)
+- HTTP port: `2020` (configurable via `PORT` environment variable)
+
+**HTTPS/SSL Configuration:**
+- HTTPS port: `8443` (configurable via `SSL_PORT` environment variable)
+- Keystore type: PKCS12
+- Keystore location: Configurable via `KEYSTORE_PATH` (default: `classpath:keystore.p12`)
+- Keystore password: Configurable via `KEYSTORE_PASSWORD`
+- Optional HTTP to HTTPS redirect (disabled by default)
+
+**CORS Configuration:**
+- Enabled for `https://newscaper.catchee.xyz`
+- Allowed methods: GET, POST, PUT, DELETE, OPTIONS
+- Credentials support: Enabled
+- Configured headers and max-age for preflight caching
+
+See `SSL_SETUP.md` for detailed SSL certificate setup instructions.
 
 ### Domain Model
 
@@ -142,8 +161,10 @@ target/
 
 ## Common Pitfalls
 
-- The datasource URL property has a typo (`jubc` instead of `jdbc`)
-- Database credentials are hardcoded in `application.properties` - use environment variables or profiles for production
+- Database credentials use default values in `application.properties` - always override with environment variables in production
 - The `rating` and `specialFeatures` fields in Film are typed as `Object` - consider creating Java enums for type safety
 - No REST resources are currently implemented - only domain models exist
 - No tests are present in the repository yet
+- SSL keystore files (*.p12, *.jks) and certificates must never be committed to version control - they are gitignored for security
+- The default keystore password `changeit` must be changed for production deployments
+- CORS is configured for a specific domain - update `quarkus.http.cors.origins` if frontend URL changes

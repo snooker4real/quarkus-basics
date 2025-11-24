@@ -28,6 +28,14 @@ buildNumber.properties
 .env.local
 .env.*.local
 
+# SSL/TLS Certificates and Keystores
+*.p12
+*.jks
+*.keystore
+*.pem
+*.crt
+*.key
+
 # OS
 .DS_Store
 Thumbs.db
